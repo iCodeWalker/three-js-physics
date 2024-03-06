@@ -48,3 +48,9 @@
     We create the "ContactMaterial" and add it to the world with addContactMaterial(...)
 
     After this we need to associate the materials with the bodies
+
+12. Simplified ContactMaterial
+    simplify everything and replace the two "Materials" by the default one
+
+13. We can also set our material as the deafult one with the deafultContactMaterial property on the World.
+    world.defaultContactMaterial = defaultMaterial

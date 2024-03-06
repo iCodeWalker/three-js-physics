@@ -47,19 +47,37 @@ world.gravity.set(0, -9.82, 0);
 // Body are objects that will fall and collide with other bodies.
 
 // ### Materials ###
-const concreteMaterial = new CANNON.Material("concrete");
-const plasticMaterial = new CANNON.Material("plastic");
+// const concreteMaterial = new CANNON.Material("concrete");
+// const plasticMaterial = new CANNON.Material("plastic");
 
-const concretePlasticContactMaterial = new CANNON.ContactMaterial(
-  concreteMaterial,
-  plasticMaterial,
+// const concretePlasticContactMaterial = new CANNON.ContactMaterial(
+//   concreteMaterial,
+//   plasticMaterial,
+//   {
+//     friction: 0.1,
+//     restitution: 0.7,
+//   }
+// );
+
+// world.addContactMaterial(concretePlasticContactMaterial);
+
+// ### Simplified Material
+// simplify everything and replace the two "Materials" by the default one
+
+const defaultMaterial = new CANNON.Material("default");
+const defaultContactMaterial = new CANNON.ContactMaterial(
+  defaultMaterial,
+  defaultMaterial,
   {
     friction: 0.1,
     restitution: 0.7,
   }
 );
 
-world.addContactMaterial(concretePlasticContactMaterial);
+// world.addContactMaterial(defaultContactMaterial);
+
+//  set our material as the deafult one with the deafultContactMaterial property on the World
+world.defaultContactMaterial = defaultContactMaterial;
 
 // To create a "Body" first we need to create a "Shape", it's like Geometry in case of three.js
 // Sphere
@@ -71,7 +89,8 @@ const sphereBody = new CANNON.Body({
   position: new CANNON.Vec3(0, 3, 0),
   shape: sphereShape,
   // ### need to associate the material with the body
-  material: plasticMaterial,
+  //material: plasticMaterial,
+  //   material: defaultMaterial,
 });
 
 // We need to add this Body to the physics world, just like we add mesh to scene.
@@ -84,7 +103,8 @@ const floorShape = new CANNON.Plane();
 const floorBody = new CANNON.Body();
 
 // ### need to associate the material with the body
-floorBody.material = concreteMaterial;
+// floorBody.material = concreteMaterial;
+// floorBody.material = defaultMaterial;
 
 floorBody.mass = 0; // To set the body static we use mass value  = 0;
 floorBody.addShape(floorShape);
