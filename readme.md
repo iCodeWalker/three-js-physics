@@ -34,3 +34,17 @@
     1 -> a fixed time step. We want our experience to run at 60fps, so value can be 1/60
     2 - > how much time passed since the last step.
     3 -> how much iterations the world can apply.
+
+11. Contact Material
+    We can change the friction and bouncing behaviour by settiing a "Material".
+    A Material is just a reference and we should create one for each type of material in the scene.
+    Types : plastic, concrete, jelly etc.
+
+    We have to create a "ContactMaterial" which is the combination of two Materials and how they should collide.
+    The first two parameters are the Materials.
+    The Third parameter is an object containing collision properties like friction (how much does it rub)
+    and restitution (how much does it bounce). Default value for both is 0.3
+
+    We create the "ContactMaterial" and add it to the world with addContactMaterial(...)
+
+    After this we need to associate the materials with the bodies

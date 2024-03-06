@@ -46,6 +46,21 @@ world.gravity.set(0, -9.82, 0);
 // To create objects in physics world we need to create a "Body"
 // Body are objects that will fall and collide with other bodies.
 
+// ### Materials ###
+const concreteMaterial = new CANNON.Material("concrete");
+const plasticMaterial = new CANNON.Material("plastic");
+
+const concretePlasticContactMaterial = new CANNON.ContactMaterial(
+  concreteMaterial,
+  plasticMaterial,
+  {
+    friction: 0.1,
+    restitution: 0.7,
+  }
+);
+
+world.addContactMaterial(concretePlasticContactMaterial);
+
 // To create a "Body" first we need to create a "Shape", it's like Geometry in case of three.js
 // Sphere
 const sphereShape = new CANNON.Sphere(0.5);
@@ -55,6 +70,8 @@ const sphereBody = new CANNON.Body({
   mass: 1,
   position: new CANNON.Vec3(0, 3, 0),
   shape: sphereShape,
+  // ### need to associate the material with the body
+  material: plasticMaterial,
 });
 
 // We need to add this Body to the physics world, just like we add mesh to scene.
@@ -65,6 +82,9 @@ world.addBody(sphereBody);
 // ##### Add a floor to physics world
 const floorShape = new CANNON.Plane();
 const floorBody = new CANNON.Body();
+
+// ### need to associate the material with the body
+floorBody.material = concreteMaterial;
 
 floorBody.mass = 0; // To set the body static we use mass value  = 0;
 floorBody.addShape(floorShape);
