@@ -54,3 +54,11 @@
 
 13. We can also set our material as the deafult one with the deafultContactMaterial property on the World.
     world.defaultContactMaterial = defaultMaterial
+
+14. Apply Forces:
+    Four methods to apply force on the body:
+    1. applyForce : apply force from a specified point in space (not necessarily on the Body's surface) like wind,
+       a small push or a strong push.
+    2. applyImpulse : like applyForce but instead of adding to the force, will add to the velocity.
+    3. applyLocalForce : same as applyForce but the coordinates are local to the Body(0,0,0 would be center of body)
+    4. applyLocalImpulse : same as applyImpulse but the coordinates are local to the Body

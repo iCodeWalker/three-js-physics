@@ -93,6 +93,14 @@ const sphereBody = new CANNON.Body({
   //   material: defaultMaterial,
 });
 
+// ##### Add Force to the body #####
+// use applyLocalForce() to apply small push on our sphereBody at the start
+
+sphereBody.applyLocalForce(
+  new CANNON.Vec3(150, 0, 0),
+  new CANNON.Vec3(0, 0, 0)
+);
+
 // We need to add this Body to the physics world, just like we add mesh to scene.
 world.addBody(sphereBody);
 
@@ -224,6 +232,10 @@ const tick = () => {
   const deltaTime = elapsedTime - oldElapsedTime;
   oldElapsedTime = elapsedTime;
 
+  // Mimic the wind by using applyForce(...) on each frame before updating the World
+  // use sphere.position to apply the force at the right position
+
+  sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position);
   // ### Update physics world
   world.step(1 / 60, deltaTime, 3);
   //   console.log(sphereBody.position.y, "sphereBody.position");
