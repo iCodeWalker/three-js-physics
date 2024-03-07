@@ -96,10 +96,10 @@ const sphereBody = new CANNON.Body({
 // ##### Add Force to the body #####
 // use applyLocalForce() to apply small push on our sphereBody at the start
 
-sphereBody.applyLocalForce(
-  new CANNON.Vec3(150, 0, 0),
-  new CANNON.Vec3(0, 0, 0)
-);
+// sphereBody.applyLocalForce(
+//   new CANNON.Vec3(150, 0, 0),
+//   new CANNON.Vec3(0, 0, 0)
+// );
 
 // We need to add this Body to the physics world, just like we add mesh to scene.
 world.addBody(sphereBody);
@@ -135,7 +135,7 @@ const sphere = new THREE.Mesh(
 
 sphere.castShadow = true;
 sphere.position.y = 0.5;
-scene.add(sphere);
+// scene.add(sphere);
 
 /**
  * Floor
@@ -222,6 +222,55 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 /**
+ * Utils
+ */
+
+const objectsToUpdate = [];
+
+// ##### Handling Multiple Objects ######
+// Create a createSphere function with "radius" and "position" parameters
+
+const createSphere = (radius, position) => {
+  // ##### Three.js scene
+  // ##### Create a Mesh
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 20, 20),
+    new THREE.MeshStandardMaterial({
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+    })
+  );
+
+  mesh.castShadow = true;
+  mesh.position.copy(position);
+  scene.add(mesh);
+
+  // ##### Physics world
+  // ##### Create a Body
+
+  const shape = new CANNON.Sphere(radius);
+
+  const body = new CANNON.Body({
+    mass: 1,
+    position: new CANNON.Vec3(0, 3, 0),
+    shape: shape,
+    material: defaultMaterial,
+  });
+
+  body.position.copy(position);
+  world.addBody(body);
+
+  // push the mesh and body in the array
+  objectsToUpdate.push({
+    mesh: mesh,
+    body: body,
+  });
+};
+
+createSphere(0.5, { x: 0, y: 3, z: 0 });
+
+/**
  * Animate
  */
 const clock = new THREE.Clock();
@@ -235,7 +284,7 @@ const tick = () => {
   // Mimic the wind by using applyForce(...) on each frame before updating the World
   // use sphere.position to apply the force at the right position
 
-  sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position);
+  //   sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position);
   // ### Update physics world
   world.step(1 / 60, deltaTime, 3);
   //   console.log(sphereBody.position.y, "sphereBody.position");
@@ -246,7 +295,14 @@ const tick = () => {
   //   sphere.position.z = sphereBody.position.z;
 
   // we can also use the copy() method to copy all positions
-  sphere.position.copy(sphereBody.position);
+  //   sphere.position.copy(sphereBody.position);
+
+  // ### After updating the physical world, loop throught the array and update the mesh.position with the
+  // body.position
+
+  for (const object of objectsToUpdate) {
+    object.mesh.position.copy(object.body.position);
+  }
 
   // Update controls
   controls.update();
