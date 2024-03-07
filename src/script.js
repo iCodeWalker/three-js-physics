@@ -243,18 +243,19 @@ const objectsToUpdate = [];
 // ##### Handling Multiple Objects ######
 // Create a createSphere function with "radius" and "position" parameters
 
+const sphereGemometry = new THREE.SphereGeometry(1, 20, 20);
+const sphereMaterial = new THREE.MeshStandardMaterial({
+  metalness: 0.3,
+  roughness: 0.4,
+  envMap: environmentMapTexture,
+});
+
 const createSphere = (radius, position) => {
   // ##### Three.js scene
   // ##### Create a Mesh
-  const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20),
-    new THREE.MeshStandardMaterial({
-      metalness: 0.3,
-      roughness: 0.4,
-      envMap: environmentMapTexture,
-    })
-  );
-
+  const mesh = new THREE.Mesh(sphereGemometry, sphereMaterial);
+  // we can increase the radius of sphere here
+  mesh.scale.set(radius, radius, radius);
   mesh.castShadow = true;
   mesh.position.copy(position);
   scene.add(mesh);
