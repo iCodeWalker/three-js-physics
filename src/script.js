@@ -7,6 +7,19 @@ import * as CANNON from "cannon-es";
  * Debug
  */
 const gui = new dat.GUI();
+const debugObject = {};
+debugObject.createSphere = () => {
+  //   console.log("create sphere");
+  //createSphere(0.5, { x: 0, y: 3, z: 0 });
+
+  // create random sphere
+  createSphere(Math.random() * 0.5, {
+    x: (Math.random() - 0.5) * 3,
+    y: 3,
+    z: (Math.random() - 0.5) * 3,
+  });
+};
+gui.add(debugObject, "createSphere");
 
 /**
  * Base
