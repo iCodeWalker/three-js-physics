@@ -67,6 +67,13 @@ const environmentMapTexture = cubeTextureLoader.load([
 // #### Create a physics world
 const world = new CANNON.World();
 
+// To switch to SAPBroadPhase, simply instantiate it in the 'world.broadphase' property and use the same world
+// paramter
+world.broadphase = new CANNON.SAPBroadphase(world);
+
+// To activate sleep
+world.allowSleep = true;
+
 // We have to add gravity in the physics world to have objects fall, otherwise it will stay at it's position.
 // To add gravity
 world.gravity.set(0, -9.82, 0);

@@ -57,8 +57,32 @@
 
 14. Apply Forces:
     Four methods to apply force on the body:
+
     1. applyForce : apply force from a specified point in space (not necessarily on the Body's surface) like wind,
        a small push or a strong push.
     2. applyImpulse : like applyForce but instead of adding to the force, will add to the velocity.
     3. applyLocalForce : same as applyForce but the coordinates are local to the Body(0,0,0 would be center of body)
     4. applyLocalImpulse : same as applyImpulse but the coordinates are local to the Body
+
+15. Performance :
+
+    1. BroadPhase
+       When testing the collisions between objects, a naive approach is to test every Body against every other Body. This is bad for Performance
+       This testing of collision of every body with every body by CPU is called broad phase.
+       And we can use different broadphase for better performance.
+
+       NaiveBroadPhase - test every "Bodies" against every other "Bodies"
+       GridBroadPhase - This divides the scene in number of grid in every direction and tests the collisions only with the bodies that are present in the grid.
+       SAPBroadPhase - (Sweep and Prune) - tests Bodies on arbitrary axes during multiple steps.
+
+       The default broadphase is NaiveBroadPhase and its recommended to switch to SAPBroadPhase
+
+       world.broadphase = new CANNON.SAPBroadphase(world);
+
+    2. Sleep
+       Even if we use an improved broadphase algorithm, all the Bodies are tested, even those which not moving anymore.
+       When the Body's speed get really slow the Body can fall asleep and won't be tested unless a sufficient force is applied.
+
+       world.allowSleep = true;
+
+       Can control time and speed limit of sleep for the objects with 'sleepSpeedLimit' and 'sleepTimeLimit'
