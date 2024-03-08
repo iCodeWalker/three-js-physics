@@ -86,3 +86,6 @@
        world.allowSleep = true;
 
        Can control time and speed limit of sleep for the objects with 'sleepSpeedLimit' and 'sleepTimeLimit'
+
+16. Events
+    We can listen to events on Body like 'colide','sleep' or 'wakeup'.

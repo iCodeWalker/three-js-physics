@@ -45,6 +45,27 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
+
+/**
+ * Sounds
+ */
+
+// Create the sound in javascript and create a function to play it.
+const hitSound = new Audio("/sounds/hit.mp3");
+
+const playHitSound = (collisionInfo) => {
+  // To know the strength of the impact
+  // The impact strength can be found with getImpactVelocityAlongNormal() method on contact property
+  const impactStrength = collisionInfo.contact.getImpactVelocityAlongNormal();
+
+  if (impactStrength > 1.5) {
+    // Add randomness to the sound volume
+    hitSound.volume = Math.random();
+    // reset the sound to 0 with currentTime property, if the sound is already been played
+    hitSound.currentTime = 0;
+    hitSound.play();
+  }
+};
 /**
  * Textures
  */
@@ -63,7 +84,6 @@ const environmentMapTexture = cubeTextureLoader.load([
 /**
  * Physics
  */
-
 // #### Create a physics world
 const world = new CANNON.World();
 
@@ -297,6 +317,9 @@ const createSphere = (radius, position) => {
   });
 
   body.position.copy(position);
+
+  // Listen to the 'collide' event and use the playHitSound function as the callback
+  body.addEventListener("collide", playHitSound);
   world.addBody(body);
 
   // push the mesh and body in the array
@@ -341,6 +364,10 @@ const createBox = (width, height, depth, position) => {
   });
 
   body.position.copy(position);
+
+  // Listen to the 'collide' event and use the playHitSound function as the callback
+  body.addEventListener("collide", playHitSound);
+
   world.addBody(body);
 
   // push the mesh and body in the array
