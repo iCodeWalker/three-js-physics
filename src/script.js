@@ -37,6 +37,27 @@ debugObject.createBox = () => {
 
 gui.add(debugObject, "createBox");
 
+// Create a reset function and add it to our Dat.GUI
+debugObject.reset = () => {
+  console.log("reset");
+  // Loop through the objectsToUpdate array and remove both object.body from the world and object.mesh from the
+  // scene.
+
+  for (const object of objectsToUpdate) {
+    // Remove event listener
+    object.body.removeEventListener("collide", playHitSound);
+    // Remove Body from world
+    world.removeBody(object.body);
+
+    // Remove Mesh from scene
+    scene.remove(object.mesh);
+
+    // Empty the objectsToUpdate array
+    objectsToUpdate.splice(0, objectsToUpdate.length);
+  }
+};
+gui.add(debugObject, "reset");
+
 /**
  * Base
  */
