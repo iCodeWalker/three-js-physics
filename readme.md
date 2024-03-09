@@ -89,3 +89,21 @@
 
 16. Events
     We can listen to events on Body like 'colide','sleep' or 'wakeup'.
+
+17. Constraints
+    Constraints enable constraints between two bodies. Connection between two bodies.
+
+    1. HingeConstraint : acts like a door hinge.
+    2. DistanceConstraint : forces the bodies to keep a distance between each other.
+    3. LockConstraint : merges the bodies like if they were one piece.
+    4. PointToPointConstraint : glues the bodies to a specific point.
+
+    Reference Link : https://schteppe.github.io/cannon.js/
+
+    The component of our computer doing the physics is CPU. And the webgl part is handled by is GPU.
+    Currently, everything is done by the same thread in of our CPU and that thread can be quickly overload.
+
+    The solution is to use workers.
+
+    Workers let us put a part of our code in a different thread to spread the load.
+    We can then send and receive data from that code and considerably improve performances.
